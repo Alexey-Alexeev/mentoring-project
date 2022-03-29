@@ -1,0 +1,12 @@
+.header {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+}
+.form {
+    border: 1px solid black;
+    width: 400px;
+    padding: 2%;
+}
+
