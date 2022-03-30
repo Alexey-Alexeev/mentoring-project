@@ -1,26 +1,25 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
-import './formAuthorization.css';
+import { Link, useNavigate } from 'react-router-dom';
+import './formRegistration.css';
 import 'antd/dist/antd.css';
 import { Form, Input, Button } from 'antd';
+import axios from 'axios';
+import { Navigation } from '../../components/Navigation/Navigation';
+import {useDispatch} from "react-redux";
+import {createUser} from "../../features/auth/authReducer";
 
-function FormAuthorization() {
-  const handlerButton = (e) => {
-    console.log(e);
+function FormRegistration() {
+  const navigate = useNavigate();
+    const dispatch = useDispatch();
+  const handlerButton = async (e) => {
+      dispatch(createUser(e));
+    navigate('/signIn');
   };
 
   return (
     <>
-      <div>
-        <nav>
-          <Link to="/Home" style={{ marginLeft: '5px' }}>
-            Home
-          </Link>
-          <Link to="/questions" style={{ marginLeft: '5px' }}>
-            Questions
-          </Link>
-        </nav>
-      </div>
+      <Navigation />
+      <h1 style={{ textAlign: 'center' }}>Регистрация</h1>
       <div className="header">
         <div className="form">
           <Form
@@ -59,7 +58,7 @@ function FormAuthorization() {
             </Form.Item>
             <Form.Item wrapperCol={{ offset: 6, span: 16 }}>
               <Button type="primary" htmlType="submit">
-                Войти
+                Зарегистрироваться
               </Button>
             </Form.Item>
           </Form>
@@ -69,7 +68,7 @@ function FormAuthorization() {
   );
 }
 
-export default FormAuthorization;
+export default FormRegistration;
 
 // 1)
 // Поля не должны гулять. Выравнить
