@@ -19,7 +19,7 @@ export const Navigation = () => {
   ];
   const location = useLocation();
   const currentLocation = location.pathname.slice(1);
-  const name = useSelector((state) => state.userInfo.name);
+  // const email = useSelector((state) => state.users.currentUser.email);
   return (
     <Menu selectedKeys={[currentLocation]} mode="horizontal" style={{ margin: '0 20%' }}>
       {nav.map((item) => {
@@ -31,9 +31,9 @@ export const Navigation = () => {
           </Menu.Item>
         );
       })}
-      {name && (
-          <Menu.Item>UserName: {name}</Menu.Item>
-      )}
+      {/*{email && (*/}
+      {/*    <Menu.Item>Email: {email}</Menu.Item>*/}
+      {/*)}*/}
     </Menu>
 
   );

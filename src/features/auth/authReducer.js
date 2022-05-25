@@ -6,14 +6,22 @@ export const createUser = createAsyncThunk('users/createUser', async (dataRegist
     return [result.data];
 });
 
+export const getUser = createAsyncThunk('users/getUser', async () => {
+    const result = await $api.get(`/users`);
+    return result.data;
+});
+
+
 export const authSlice = createSlice({
     name: 'users',
-    initialState: { users: [], loading: 'idle' },
+    initialState: { users: [], loading: 'idle', currentUser: null },
     reducers: {},
     extraReducers: (builder) => {
         builder.addCase(createUser.fulfilled, (state, action) => {
             state.users.push(...action.payload);
-            console.log('state.users', state.users);
+        });
+        builder.addCase(getUser.fulfilled, (state, action) => {
+            state.currentUser = action.payload
         });
     },
 });

@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { Input, Table, Typography, Modal, Tag, Button } from 'antd';
 import { EditOutlined, DeleteOutlined, SearchOutlined } from '@ant-design/icons';
@@ -18,6 +19,7 @@ function TableQuestions() {
     {
       title: 'id',
       dataIndex: 'id',
+        render: id => <Link key={id} to={`/cardQuestion/${id}`}>{id}</Link>
     },
     {
       title: 'Текст',
@@ -35,10 +37,11 @@ function TableQuestions() {
       render: (tags) => (
         <>
           {tags.map((tag) => {
-            let color = tag.length > 5 ? 'geekblue' : 'green';
+            let color = tag.text.length > 5 ? 'geekblue' : 'green';
+
             return (
-              <Tag color={color} key={tag}>
-                {tag.toUpperCase()}
+              <Tag color={color} key={`${tag.id}_${tag.text}`}>
+                {tag.text.toUpperCase()}
               </Tag>
             );
           })}
@@ -115,6 +118,7 @@ function TableQuestions() {
       delete: 'Удалить',
     };
   });
+
   const removeQuestion = (id) => {
     Modal.confirm({
       title: 'Вы уверены, что хотите удалить вопрос?',
@@ -130,6 +134,7 @@ function TableQuestions() {
     setIsEditing(true);
     setEditingQuestion({ ...record });
   };
+
   return (
     <>
       <div>
@@ -137,13 +142,12 @@ function TableQuestions() {
           columns={columns}
           dataSource={data}
           pagination={{
-            total: 15,
-            defaultPageSize: '2',
+            defaultPageSize: '3',
             showSizeChanger: true,
-            pageSizeOptions: [2, 7, 10, 12, 15, 20],
-            onChange: (page, pageSize) => {
-              dispatch(fetchQuestions(page - 1));
-            },
+            pageSizeOptions: [2, 3, 7],
+            // onChange: (page, pageSize) => {
+            //   dispatch(fetchQuestions());
+            // },
           }}
         />
         <Modal
@@ -154,8 +158,9 @@ function TableQuestions() {
             setEditingQuestion(null);
           }}
           onOk={() => {
-            const { id, text, answer, tags } = editingQuestion;
-            dispatch(updateQuestion({ id, text, answer, tags }));
+            const tags = editingQuestion?.tags?.split(' ');
+            const {id, text, answer} = editingQuestion;
+            dispatch(updateQuestion({id, text, answer, tags}));
             setIsEditing(false);
             setEditingQuestion(null);
           }}
